@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <types.h>
+#include <stat.h>
+#include <math.h>
+
+#include "header1.h"
+#include "main.c.processed"
+#include "header2.h"
+#include "main.c"
+int main(void)
+
+{
+
+	printf("Q is powr: %d",div(2,10));
+
+	return 0;
+
+}
+
