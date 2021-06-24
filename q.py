@@ -16,9 +16,9 @@ def string_surge(left,right,center):
 def glue_print(lst,mode=0): # Mode == 0 -> Print local include
     for it in lst:        # Mode == 1 -> Print sysdir include
         if mode == 1:
-            print("#include <" + it + " >")
+            print("#include <" + it + ">")
         else:
-            print('#include "' + it + ' "')
+            print('#include "' + it + '"')
 
 def is_whitespace(char):
     
