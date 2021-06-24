@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import glob
 import os
@@ -35,10 +37,21 @@ def strgen(line,lastline,chars,path):
     if path == '':
         path=os.getcwd()
     for strn in strlst:
-        strn=string_surge(line,'',strn) + lastline  # Generate file list
+        strn=string_surge(line,'',strn)  # Generate file name
+        ostrn=strn
+        npath=path
+        if (dirnum := strn.rfind("/")) != -1:
+            path=path+strn[0:dirnum+1]
+            strn=strn[dirnum+1:len(strn)] + lastline 
+        else:                                           # Add extension
+            strn=strn + lastline
         for file in os.listdir(path):
             if strn == file:
+                if dirnum == -1:
+                    file=ostrn[0:dirnum+1]+file
                 res.append(file)
+        path=npath
+
     return res
 
 def strparse(chars,path):  
@@ -48,7 +61,18 @@ def strparse(chars,path):
         if (upb := chars.find("}")) != -1:
             return strgen(chars[0:lwb],chars[upb+1:len(chars)],chars[lwb:upb],path)
     elif chars.find("*") != -1:
-        return glob.glob(path+chars)
+        if path == '':
+            path=os.getcwd()
+
+        if path[len(path)-1] != "/":
+            path=path+"/"
+
+        resglob= glob.glob(path+chars)
+        for it in range(0,len(resglob)):
+            if len(resglob[it]) > len(chars):
+                resglob[it]=resglob[it][len(path):len(resglob[it])]
+
+        return resglob
     else:
         return False
 
@@ -65,7 +89,7 @@ def scan_proc(line,envr):
                 if is_white:
                     if (ind2 := line.find("<")) == -1:
                         if (ind2 := line.find('"')) != -1:
-                            res=strparse(line[ind2+1:line.rfind('"')],envr)
+                            res=strparse(line[ind2+1:line.rfind('"')],'')
                             if res:
                                 glue_print(res)
                                 return True
@@ -85,7 +109,7 @@ def scan_proc(line,envr):
         else:
             if (ind2 := line.find("<")) == -1:
                 if (ind2 := line.find('"')) != -1:
-                    res=strparse(line[ind2+1:line.rfind('"')],envr)
+                    res=strparse(line[ind2+1:line.rfind('"')],'')
                     if res:
                         glue_print(res)
                         return True
