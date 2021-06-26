@@ -139,6 +139,9 @@ def main():
                 pathn=""
             else:
                 pathn=os.environ["LIBPATH"]
+            if pathn[len(pathn)-1] == "/":
+                pathn=pathn+"/"
+
             while line := f.readline():
                 if not scan_proc(line,pathn):
                     print(line)
