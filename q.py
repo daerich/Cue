@@ -144,6 +144,6 @@ def main():
 
             while line := f.readline():
                 if not scan_proc(line,pathn):
-                    print(line)
+                    print(line,end='')
                 
 main()
