@@ -31,8 +31,6 @@ Rewrite main.c:
 after
 ```
 LIBPATH=/usr/include/ q.py main.c
-                    ^
-                    |------ slash is significant
 ```
 main.c will become:
 ```
