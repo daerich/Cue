@@ -4,23 +4,20 @@ import sys
 import glob
 import os
 
+# Globals
+resfile=None
+
 def string_surge(left,right,center):
-    res=[]
-    for x in left:
-        res.append(x)
-    for x in center:
-        res.append(x)
-    for x in right:
-        res.append(x)
-    return ''.join(res)
+
+    return left+center+right
 
 
 def glue_print(lst,mode=0): # Mode == 0 -> Print local include
     for it in lst:        # Mode == 1 -> Print sysdir include
         if mode == 1:
-            print("#include <" + it + ">")
+            resfile.write("#include <" + it + ">\n")
         else:
-            print('#include "' + it + '"')
+            resfile.write('#include "' + it + '"\n')
 
 def is_whitespace(char):
     
@@ -127,13 +124,16 @@ def scan_proc(line,envr):
 
 
 def main():
+    global resfile
     if len(sys.argv) <= 1:
-        print("Usage:\n q [FILE...]\n"\
-                " where FILE is a file to be processed")
+        print("Usage:\n q [FILE..]\n"\
+                " where FILE is a file to be processed.\n"
+                " Output files: origname_p.c")
         return
     for file in sys.argv:
         if file == sys.argv[0]:
             continue
+
         with open(file,"r") as f:
             if "LIBPATH" not in os.environ:
                 pathn=""
@@ -141,9 +141,10 @@ def main():
                 pathn=os.environ["LIBPATH"]
             if pathn[len(pathn)-1] == "/":
                 pathn=pathn+"/"
-
+            filen=string_surge(file[0:file.rfind(".c")],".c","_p")
+            resfile=open(filen,"w")
             while line := f.readline():
                 if not scan_proc(line,pathn):
-                    print(line,end='')
-                
+                    resfile.write(line)
+        resfile.close() 
 main()

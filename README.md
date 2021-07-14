@@ -6,7 +6,7 @@ Currently it features:
 - String extended include
 ### Usage
 ```
-LIBPATH=/path/to/system/include q.py [FILE..] > preprocessed_files.c
+LIBPATH=/path/to/system/include q.py [FILE..]
 ```
 ### Demonstration:
 Suppose you have the following trivial include.
@@ -32,7 +32,7 @@ after
 ```
 LIBPATH=/usr/include/ q.py main.c
 ```
-main.c will become:
+main_p.c will become:
 ```
 #include <stdio.h>
 #include <stdlib.h>
