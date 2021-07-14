@@ -32,7 +32,7 @@ after
 ```
 LIBPATH=/usr/include/ q.py main.c
 ```
-main_p.c will become:
+main.c will be copied to main_p.c with:
 ```
 #include <stdio.h>
 #include <stdlib.h>
